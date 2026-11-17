@@ -1,0 +1,16 @@
+framework/
+severed-chains/
+local-codegen/
+local-native*/
+disc/
+discs/
+saves/
+*.iso
+*.bin
+*.chd
+*.elf
+*.self
+*.o
+*.a
+*.zip
+*.log

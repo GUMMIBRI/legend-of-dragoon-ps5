@@ -1,0 +1,28 @@
+[game]
+name = "The Legend of Dragoon"
+id = "SCUS-94491"
+players = 1
+disc = "disc/disc1.cue"
+exe = "disc/SCUS_944.91"
+load_address = "0x80188888"
+entry_pc = "0x801BF4E8"
+text_size = "0x0003E000"
+stack_base = "0x801FFFF0"
+
+[recompiler]
+seeds = "seeds/ghidra_funcs.txt"
+out_dir = "generated-reachable"
+strict = true
+discovery = "reachable"
+
+[runtime]
+window_title = "The Legend of Dragoon"
+memcard_dir = "saves"
+overlay_cache = false
+
+[video]
+renderer = "software"
+aspect_ratio = "4:3"
+
+[controller]
+default_mode = "digital"

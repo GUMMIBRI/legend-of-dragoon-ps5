@@ -1,0 +1,142 @@
+[
+  {
+    "path": ".gitignore",
+    "bytes": 144,
+    "sha256": "fda8cd73b66bbd8a07aa38b633bc3a04dc3bde3f282e3e56dee5d63ab231b9eb"
+  },
+  {
+    "path": "build-ps5-title.ps1",
+    "bytes": 2602,
+    "sha256": "d2863dfcacd6f569663f9ef0b9a67705056202b1840755845f3df2a5e75dcff9"
+  },
+  {
+    "path": "CMakeLists.txt",
+    "bytes": 2032,
+    "sha256": "72986552d64f9901b81b4ee03875551c19c8169fdc18076c40b18e47a5f8c2a4"
+  },
+  {
+    "path": "disc1-game.toml",
+    "bytes": 522,
+    "sha256": "bd2c6db11a5dcb7cc138f10925cc960666af26bcb867508742be4e72e31446f7"
+  },
+  {
+    "path": "dragoon_field_art.cpp",
+    "bytes": 9970,
+    "sha256": "de8e128a8a98e20c56253d43e6c7d957ca300c436f2fc6acd55febe6ca36c331"
+  },
+  {
+    "path": "dragoon_field_art.h",
+    "bytes": 3844,
+    "sha256": "e1bf986fc517c8dff154699b4b76d9c8525810707961f6e33436e0d76c59aad4"
+  },
+  {
+    "path": "dragoon_field_disc.c",
+    "bytes": 4383,
+    "sha256": "a336449523fe15668f36cc4e915bfcc19320ec90f039b0e92b893f51c08ee6f5"
+  },
+  {
+    "path": "dragoon_field_disc.h",
+    "bytes": 1638,
+    "sha256": "6e2006d2404e940fa04b57f6cb00dfc5d3aa7a1ad3fda5cbf9685820ee5812d3"
+  },
+  {
+    "path": "dragoon_field_runtime.c",
+    "bytes": 5743,
+    "sha256": "80835aed11a4143cbadc887ffdc739037bd722bae8bfbbeef31ced449ad9c51b"
+  },
+  {
+    "path": "dragoon_field_runtime.h",
+    "bytes": 5912,
+    "sha256": "9dd35a4b04712b108ae1fdbafb80cfbd1b91c35286327dcc617cf92962b94be1"
+  },
+  {
+    "path": "dragoon_field_trace.cpp",
+    "bytes": 16656,
+    "sha256": "9c24fcd6305074641761d1a2093efa91ad3002cd1d5ec89e449c9c870bcb5ef7"
+  },
+  {
+    "path": "LICENSE",
+    "bytes": 4694,
+    "sha256": "75f5f2ae732cdc31adf8ad90a42ed4ed47476b3f27fcdf90de13e79d6788309d"
+  },
+  {
+    "path": "licenses/PSXRecomp-LICENSE",
+    "bytes": 4694,
+    "sha256": "75f5f2ae732cdc31adf8ad90a42ed4ed47476b3f27fcdf90de13e79d6788309d"
+  },
+  {
+    "path": "licenses/PSXRecomp-PERMISSIONS.md",
+    "bytes": 3494,
+    "sha256": "3cf1e48aa3a4bc792ba599e40b68247b09d4e95e8561adaf9a26a25c9a58d4af"
+  },
+  {
+    "path": "licenses/PSXRecomp-THIRD-PARTY.md",
+    "bytes": 13852,
+    "sha256": "f6bbd120599e32e268e8deaec47e86cc29ca115873413b1ef95e5793a377972f"
+  },
+  {
+    "path": "licenses/Severed-Chains-AGPL-3.0.txt",
+    "bytes": 35184,
+    "sha256": "6f1e622c82a380075843bb084a7ec3b1f1d12a4a02526d75e78b0924a860aa75"
+  },
+  {
+    "path": "patches/psxrecomp-ps5-dragoon.patch",
+    "bytes": 488828,
+    "sha256": "e8106f92139bea5249d29051b5363627a1550f361a04e731042e321055307533"
+  },
+  {
+    "path": "patches/severed-chains-disc-directory.patch",
+    "bytes": 2039,
+    "sha256": "9a618f1d44de13112431556a853ef797051afd570e8ba82164a2cf90a04a5a1a"
+  },
+  {
+    "path": "prepare_discs.py",
+    "bytes": 2266,
+    "sha256": "6930aa016293ccc7a4ef001f5be844fd59561e0f8feb96f49a9d256aa6af474e"
+  },
+  {
+    "path": "ps5_startup_log.c",
+    "bytes": 930,
+    "sha256": "89edec38db722277b1f7634d3f647741701d506302e6ed7b4525a461f6f272d4"
+  },
+  {
+    "path": "README.md",
+    "bytes": 2926,
+    "sha256": "f8cd1697498a51d95b27e45c8d71b329a9796e9d741ab29cec7bf85c070f9a9b"
+  },
+  {
+    "path": "submap_key.c",
+    "bytes": 10844,
+    "sha256": "6d6139a0686b1c077a06c23edc6a3321099c72d3ceb11d7bf14c9b09174034ab"
+  },
+  {
+    "path": "submap_key.h",
+    "bytes": 4203,
+    "sha256": "d0bf56ee058b75b5598a939bb0d51c6ec48f16562d073eeaf238acdc245babf6"
+  },
+  {
+    "path": "UPSTREAM.json",
+    "bytes": 696,
+    "sha256": "81969157c5134b80502e637413c6f0d707771bbfd11017ee88899fced65a8ebe"
+  },
+  {
+    "path": "usb_entry.c",
+    "bytes": 4276,
+    "sha256": "7671a7d98a10daaff381cd1908b9e8c86c93bfa398372283d44f4e6706eb980f"
+  },
+  {
+    "path": "usb_entry.cmake",
+    "bytes": 420,
+    "sha256": "e23bf6005626238e57381818719eeed2084a6784d401b2f6aaaffa48276403c5"
+  },
+  {
+    "path": "usb_storage.c",
+    "bytes": 4028,
+    "sha256": "d886d2ca185914820d7beb1e34fbf35a355c1c8ffd0c688893f5980866025623"
+  },
+  {
+    "path": "usb_storage.h",
+    "bytes": 633,
+    "sha256": "7c0450963be59dd44e67a6c2607f4f8d9210b3811a6f69a453d6f248a1dacc7a"
+  }
+]

@@ -1,0 +1,21 @@
+{
+  "framework": {
+    "url": "https://github.com/RetroPortingToolKit/psxrecomp.git",
+    "commit": "cddb32214762416badff5bcbb5c68aef19df25cc"
+  },
+  "severed-chains": {
+    "url": "https://github.com/Legend-of-Dragoon-Modding/Severed-Chains.git",
+    "commit": "0c08c679b6b54e167b00851f1f1458d4dea3eade"
+  },
+  "new_framework_files": [
+    "runtime/shaders/fsr1/LICENSE.txt",
+    "runtime/shaders/fsr1/ffx_a.h",
+    "runtime/shaders/fsr1/ffx_fsr1.h",
+    "runtime/shaders/fsr1_easu.frag",
+    "runtime/shaders/fsr1_rcas.frag",
+    "runtime/shaders/movie_blur.frag",
+    "runtime/src/dragoon_menu.c",
+    "runtime/src/dragoon_menu.h",
+    "runtime/tests/test_timers.c"
+  ]
+}
