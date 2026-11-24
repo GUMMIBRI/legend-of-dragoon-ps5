@@ -1,0 +1,25 @@
+--- a/runtime/src/main.cpp
++++ b/runtime/src/main.cpp
+@@ -4794,0 +4795,5 @@
++#if defined(DRAGOON_PS5)
++    /* Bounded diagnostics for the console build; explicit 0 opts out. */
++    g_runtime_perf.enabled = !enabled || (enabled[0] && enabled[0] != '0');
++    g_runtime_perf.interval_ms = 10000;
++#else
+@@ -4795,0 +4801 @@
++#endif
+@@ -5181,0 +5188,6 @@
++#if defined(DRAGOON_PS5)
++    /* Stop both reporting and instrumentation after 30 minutes at default rate. */
++    static unsigned reports = 0;
++    if (have_last && reports >= 180) { g_runtime_perf.enabled = false; return; }
++    if (have_last) ++reports;
++#endif
+@@ -5191 +5202,0 @@
+-    (void)target_ms;
+@@ -5223 +5234 @@
+-        "audio_fill=%.1f ms, underruns=+%llu, overflows=+%llu, corr=%+.5f; "
++        "audio_fill=%.1f ms, target=%.1f ms, host_rate=%d Hz, legacy=%d, underruns=+%llu, overflows=+%llu, corr=%+.5f; "
+@@ -5236 +5247 @@
+-        fill_ms, (unsigned long long)(underruns - last_underruns),
++        fill_ms, target_ms, host_rate, legacy, (unsigned long long)(underruns - last_underruns),
