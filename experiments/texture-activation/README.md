@@ -24,3 +24,5 @@ c++ -std=c++17 -Iframework/runtime/include -I/path/to/libwebp/src experiments/te
 These commands describe the source inputs; compiler and thread-linker flags can vary by platform. No dependency download is performed by the harnesses.
 
 The linked review ELF also passed the static PS5 runtime audit with no inline system calls. That is not a console test or confirmation that application-folder discovery works. A complete reproducible build recipe and installable candidate remain outstanding.
+
+`identical-duplicates.patch` is a separate experimental change against the retained portable framework source. The examined pack contains one duplicated texture key whose two PNGs are byte-identical. The patch compares bounded file contents and retains a single entry when they are identical; differing or unreadable copies remain ambiguous. Host fixtures passed identical and conflicting duplicate cases, the actual pack scan reported zero ambiguous entries, and the changed PS5 translation unit compiled and linked. This newer ELF has not yet undergone its own runtime audit or console test. The 11 rejected files require separate texture-page compatibility work.

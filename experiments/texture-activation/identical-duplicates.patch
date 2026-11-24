@@ -1,0 +1,31 @@
+--- a/runtime/src/duckstation_texture_pack.cpp
++++ b/runtime/src/duckstation_texture_pack.cpp
+@@ -383,11 +383,28 @@
+     ++p.ignored;
+     if (p.diagnostic.size() < 2048) p.diagnostic += (p.diagnostic.empty() ? "" : "; ") + s;
+ }
++bool identical_replacement_files(const fs::path& a, const fs::path& b) {
++    std::error_code ec;
++    auto as = fs::file_size(a, ec); if (ec || as > kMaxEncoded) return false;
++    auto bs = fs::file_size(b, ec); if (ec || as != bs) return false;
++    std::ifstream left(a, std::ios::binary), right(b, std::ios::binary);
++    if (!left || !right) return false;
++    std::array<char, 8192> l{}, r{};
++    uintmax_t remaining = as;
++    while (remaining) {
++        const auto n = static_cast<std::streamsize>(std::min<uintmax_t>(remaining, l.size()));
++        if (!left.read(l.data(), n) || !right.read(r.data(), n) ||
++            std::memcmp(l.data(), r.data(), static_cast<size_t>(n)) != 0) return false;
++        remaining -= static_cast<uintmax_t>(n);
++    }
++    return true;
++}
+ void add_entry(DuckTexturePack& p, const DuckTextureKey& key, const fs::path& path) {
+     const std::string name = stem(key);
+     auto previous = p.by_name.find(name);
+     if (previous != p.by_name.end()) {
+         auto& entry = p.entries[previous->second];
++        if (!entry.ambiguous && identical_replacement_files(fs::u8path(entry.path), path)) return;
+         if (!entry.ambiguous) { entry.ambiguous = true; ++p.ambiguous; }
+         return;
+     }
