@@ -14,8 +14,16 @@ extern "C" int lod_find_disc(const char* app,const char* data,const char* const 
   if(explicit_dir&&*explicit_dir)return search(explicit_dir);
   const char* suffixes[]={"","disks","discs","lod/disc"};
   for(auto suffix:suffixes){std::filesystem::path p=std::filesystem::u8path(app);if(*suffix)p/=suffix;std::string path=p.u8string();int r=search(path.c_str());if(r)return r;}
-  if(data&&*data){int r=search(data);if(r)return r;}
-  for(int i=0;i<8;++i)if(usb&&usb[i]&&*usb[i]){int r=search(usb[i]);if(r)return r;}
+  auto search_external=[&](const char* root){
+   int r=search(root);if(r)return r;
+   const auto p=std::filesystem::u8path(root).lexically_normal();
+   if(p.filename()=="lod" && p.has_parent_path()){
+    const std::string parent=p.parent_path().u8string();return search(parent.c_str());
+   }
+   return 0;
+  };
+  if(data&&*data){int r=search_external(data);if(r)return r;}
+  for(int i=0;i<8;++i)if(usb&&usb[i]&&*usb[i]){int r=search_external(usb[i]);if(r)return r;}
   return 0;
  }catch(...){if(log)log(app,"disc directory resolution failed",0,ctx);return -1;}
 }
