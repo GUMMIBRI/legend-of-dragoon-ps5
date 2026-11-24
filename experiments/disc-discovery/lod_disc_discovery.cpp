@@ -18,9 +18,9 @@ extern "C" int lod_disc_find_in_directory(const char* root,char* selected,size_t
   fs::path dir=fs::u8path(root);if(!dir.is_absolute()){report("Disc directory must be absolute");return -1;}
   std::error_code ec;auto state=fs::symlink_status(dir,ec);
   if(ec==std::errc::no_such_file_or_directory)return 0;
-  if(ec||!fs::is_directory(state)){report(std::string("Cannot inspect ")+root+": "+(ec?ec.message():"not a directory"));return -1;}
+  if(ec||!fs::is_directory(state)){report(std::string("Cannot inspect ")+root+": "+(ec?ec.message():"not a directory"));return ec==std::errc::permission_denied||ec==std::errc::operation_not_permitted?-3:-1;}
   std::vector<fs::path> candidates;size_t entries=0;
-  fs::directory_iterator it(dir,ec),end;if(ec){report(std::string("Cannot open ")+root+": "+ec.message());return -1;}
+  fs::directory_iterator it(dir,ec),end;if(ec){report(std::string("Cannot open ")+root+": "+ec.message());return ec==std::errc::permission_denied||ec==std::errc::operation_not_permitted?-3:-1;}
   for(;it!=end;it.increment(ec)){
    if(ec){report(std::string("Cannot enumerate ")+root+": "+ec.message());return -1;}
    if(++entries>512){report(std::string("Too many entries in ")+root);return -1;}

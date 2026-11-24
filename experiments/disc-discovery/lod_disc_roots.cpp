@@ -15,10 +15,10 @@ extern "C" int lod_find_disc(const char* app,const char* data,const char* const 
   const char* suffixes[]={"","disks","discs","lod/disc"};
   for(auto suffix:suffixes){std::filesystem::path p=std::filesystem::u8path(app);if(*suffix)p/=suffix;std::string path=p.u8string();int r=search(path.c_str());if(r)return r;}
   auto search_external=[&](const char* root){
-   int r=search(root);if(r)return r;
+   int r=search(root);if(r && r!=-3)return r;
    const auto p=std::filesystem::u8path(root).lexically_normal();
    if(p.filename()=="lod" && p.has_parent_path()){
-    const std::string parent=p.parent_path().u8string();return search(parent.c_str());
+    const std::string parent=p.parent_path().u8string();r=search(parent.c_str());return r==-3?0:r;
    }
    return 0;
   };
