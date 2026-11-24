@@ -1,0 +1,5 @@
+# Experimental Resume action
+
+This isolated change adds a controller-selectable Resume action to the retained Dragoon options menu. X closes the menu without calling a settings callback; the existing D-pad, X, Circle and L3+R3 controls remain in place. It adjusts row spacing to fit the existing optional actions. The fixture covers selection, repeat handling, no-callback Resume, existing setting changes and a menu with no settings. The PS5 translation unit compiled and linked into a separate review ELF; it is not packaged, installed or tested on console.
+
+This is one incremental improvement, not the requested complete PE1-style menu. Grouped display/audio/game settings, Return to Title, Exit, verified settings persistence and a selectable output resolution still need implementation or verification. Prior console logs show a 3840x2160 Vulkan present; that is output size, not evidence that a resolution selector exists or that internal rendering is 4K. The already queued texture test is unchanged.
