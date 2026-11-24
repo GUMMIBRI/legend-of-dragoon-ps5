@@ -1,0 +1,17 @@
+--- a/usb_entry.c
++++ b/usb_entry.c
+@@ -2,0 +3 @@
++#include "lod_disc_probe.h"
+@@ -96,4 +97,5 @@
+-        char dir[4096];size_t n=strlen(explicit_disc);if(n>=sizeof dir||explicit_disc[0]!='/'){show_setup_error("Dragoon: --disc requires an absolute path.");_Exit(EXIT_FAILURE);}
+-        memcpy(dir,explicit_disc,n+1);char *last=strrchr(dir,'/');if(!last||last==dir){show_setup_error("Dragoon: invalid --disc path.");_Exit(EXIT_FAILURE);}*last=0;
+-        const char *name=last+1;int raw=!strcmp(name,"disc1.bin");if(!raw&&strcmp(name,"disc1.cue")){show_setup_error("Dragoon: explicit disc must be disc1.bin or disc1.cue.");_Exit(EXIT_FAILURE);}
+-        found=lod_validate_explicit(dir,raw,disc_path,sizeof disc_path,disc_log,NULL);
++        char why[512]={};
++        if(explicit_disc[0]!='/' || strlen(explicit_disc)>=sizeof disc_path){show_setup_error("Dragoon: --disc requires a valid absolute path.");_Exit(EXIT_FAILURE);}
++        found=lod_disc_probe(explicit_disc,why,sizeof why);
++        disc_log(explicit_disc,found==1?"selected":why,found<0?EIO:0,NULL);
++        if(found==1)memcpy(disc_path,explicit_disc,strlen(explicit_disc)+1);
+@@ -101 +103 @@
+-    if(found!=1){show_setup_error("Dragoon: US Disc 1 not found or inaccessible. Place disc1.bin beside EBOOT or in disks. See lod/logs/runtime.log for attempted paths.");_Exit(EXIT_FAILURE);}
++    if(found!=1){show_setup_error("Dragoon: US Disc 1 not found or inaccessible. Place a compatible image beside EBOOT or in disks or discs. See lod/logs/runtime.log for attempted paths.");_Exit(EXIT_FAILURE);}
