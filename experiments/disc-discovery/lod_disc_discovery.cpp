@@ -32,8 +32,8 @@ extern "C" int lod_disc_find_in_directory(const char* root,char* selected,size_t
   fs::path matched_data,matched_mount;
   for(const auto &candidate:candidates){
    auto resolution=PSXRecompV4::resolve_disc_path(candidate);
-   auto parent=fs::weakly_canonical(resolution.data.parent_path(),ec);if(ec){report(ec.message());return -1;}
-   auto expected=fs::weakly_canonical(dir,ec);if(ec||parent!=expected){report("Disc CUE references a file outside its directory");return -1;}
+   for(const auto& component:resolution.data)if(component==".."){report("Disc CUE contains a parent-directory reference");return -1;}
+   if(resolution.data.parent_path().lexically_normal()!=dir.lexically_normal()){report("Disc CUE references a file outside its directory");return -1;}
    auto st=fs::symlink_status(resolution.data,ec);if(ec){report(std::string("Disc data unavailable: ")+resolution.data.u8string()+": "+ec.message());return -1;}
    if(!fs::is_regular_file(st)){report("Disc data must be a regular file");return -1;}
    char why[256]={};int result=lod_disc_probe(resolution.mount.u8string().c_str(),why,sizeof why);
