@@ -1,0 +1,26 @@
+--- a/runtime/src/main.cpp
++++ b/runtime/src/main.cpp
+@@ -21772,12 +21772,18 @@
+         std::fprintf(stderr, "psxrecomp: Vulkan guest renderer %s\n",
+                      g_vk_active ? "initialized" : "unavailable");
+ #if defined(DRAGOON_PS5)
+-        if (g_vk_active && std::getenv("DRAGOON_HD_EXPERIMENTAL") &&
+-            std::strcmp(std::getenv("DRAGOON_HD_EXPERIMENTAL"), "1") == 0) {
++        if (g_vk_active) {
+             const char* root = std::getenv("PSXRECOMP_HD_TEXTURE_ROOT");
+-            char error[256] = {};
+-            if (!gpu_hd_textures_configure(root, 1, 0, error, sizeof error))
+-                std::fprintf(stderr, "Dragoon: optional texture pack unavailable: %s\n", error);
++            std::error_code pack_error;
++            const bool pack_present = root && *root &&
++                std::filesystem::is_directory(std::filesystem::u8path(root) / "replacements", pack_error);
++            if (pack_present && !pack_error) {
++                char error[256] = {};
++                if (!gpu_hd_textures_configure(root, 1, 0, error, sizeof error))
++                    std::fprintf(stderr, "Dragoon: optional texture pack unavailable: %s\n", error);
++            } else if (pack_error) {
++                std::fprintf(stderr, "Dragoon: texture pack directory inaccessible: %s\n", pack_error.message().c_str());
++            }
+         }
+ #endif
+ #if defined(DRAGOON_PS5)
