@@ -1,0 +1,54 @@
+--- a/runtime/src/main.cpp
++++ b/runtime/src/main.cpp
+@@ -4554,0 +4555,5 @@
++#if defined(DRAGOON_PS5)
++static bool s_lod_audio_diag_collect = false;
++static uint64_t s_lod_audio_previous_pump = 0, s_lod_audio_max_pump_gap = 0;
++static uint64_t s_lod_audio_spu_dropped = 0;
++#endif
+@@ -4555,0 +4561,10 @@
++#if defined(DRAGOON_PS5)
++    if (s_lod_audio_diag_collect && sdl_audio_device && !discard_output) {
++        const uint64_t now = SDL_GetPerformanceCounter();
++        if (s_lod_audio_previous_pump && now >= s_lod_audio_previous_pump)
++            s_lod_audio_max_pump_gap = std::max(s_lod_audio_max_pump_gap, now - s_lod_audio_previous_pump);
++        s_lod_audio_previous_pump = now;
++    } else {
++        s_lod_audio_previous_pump = 0;
++    }
++#endif
+@@ -4629,0 +4645,4 @@
++#if defined(DRAGOON_PS5)
++        if (s_lod_audio_diag_collect && !discard_output)
++            s_lod_audio_spu_dropped += (uint64_t)(frames - buf_frames);
++#endif
+@@ -4794,0 +4814,6 @@
++#if defined(DRAGOON_PS5)
++    /* Bounded diagnostics for the console build; explicit 0 opts out. */
++    g_runtime_perf.enabled = !enabled || (enabled[0] && enabled[0] != '0');
++    g_runtime_perf.interval_ms = 10000;
++    s_lod_audio_diag_collect = g_runtime_perf.enabled;
++#else
+@@ -4795,0 +4821 @@
++#endif
+@@ -5181,0 +5208,6 @@
++#if defined(DRAGOON_PS5)
++    /* Stop both reporting and instrumentation after 30 minutes at default rate. */
++    static unsigned reports = 0;
++    if (have_last && reports >= 180) { g_runtime_perf.enabled = false; s_lod_audio_diag_collect = false; return; }
++    if (have_last) ++reports;
++#endif
+@@ -5191 +5222,0 @@
+-    (void)target_ms;
+@@ -5223 +5254 @@
+-        "audio_fill=%.1f ms, underruns=+%llu, overflows=+%llu, corr=%+.5f; "
++        "audio_fill=%.1f ms, target=%.1f ms, host_rate=%d Hz, legacy=%d, underruns=+%llu, overflows=+%llu, corr=%+.5f; "
+@@ -5236 +5267 @@
+-        fill_ms, (unsigned long long)(underruns - last_underruns),
++        fill_ms, target_ms, host_rate, legacy, (unsigned long long)(underruns - last_underruns),
+@@ -5267,0 +5299,5 @@
++#if defined(DRAGOON_PS5)
++    std::fprintf(stdout, "LOD audio producer: max_pump_gap_ms=%.2f, spu_dropped_frames=%llu (gaps may include pauses)\n",
++        runtime_perf_ticks_ms(s_lod_audio_max_pump_gap), (unsigned long long)s_lod_audio_spu_dropped);
++    s_lod_audio_max_pump_gap = 0;
++#endif

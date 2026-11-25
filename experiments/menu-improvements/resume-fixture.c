@@ -1,0 +1,6 @@
+#include "dragoon_menu.h"
+#include <assert.h>
+static int values[DRAGOON_MENU_SETTING_COUNT],getcalls,setcalls;
+static int get(void*c,enum DragoonMenuSetting s,int*v){(void)c;assert(s>=0&&s<DRAGOON_MENU_SETTING_COUNT);getcalls++;*v=values[s];return 1;}
+static int set(void*c,enum DragoonMenuSetting s,int v){(void)c;setcalls++;values[s]=v;return 1;}
+int main(){DragoonMenuCallbacks cb={0,0,get,set};for(int i=0;i<DRAGOON_MENU_SETTING_COUNT;i++)cb.capabilities|=DRAGOON_MENU_CAP(i);values[DRAGOON_MENU_SCALE]=1;dragoon_menu_init(&cb);assert(dragoon_menu_open());const uint32_t* p;int w,h;assert(dragoon_menu_overlay_image(&p,&w,&h)&&w==640&&h==480);int before=getcalls;dragoon_menu_input(DRAGOON_MENU_RIGHT,0);assert(getcalls==before&&setcalls==0&&dragoon_menu_is_open());dragoon_menu_input(DRAGOON_MENU_ACCEPT,1);assert(dragoon_menu_is_open());dragoon_menu_input(DRAGOON_MENU_ACCEPT,0);assert(!dragoon_menu_is_open()&&setcalls==0);assert(dragoon_menu_open());dragoon_menu_input(DRAGOON_MENU_DOWN,0);dragoon_menu_input(DRAGOON_MENU_ACCEPT,0);assert(setcalls==1&&values[DRAGOON_MENU_GAMEPLAY_FILL]==1);dragoon_menu_input(DRAGOON_MENU_BACK,0);assert(!dragoon_menu_is_open());dragoon_menu_init(0);assert(dragoon_menu_open());dragoon_menu_input(DRAGOON_MENU_ACCEPT,0);assert(!dragoon_menu_is_open());}

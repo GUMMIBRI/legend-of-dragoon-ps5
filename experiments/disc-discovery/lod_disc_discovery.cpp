@@ -18,9 +18,9 @@ extern "C" int lod_disc_find_in_directory(const char* root,char* selected,size_t
   fs::path dir=fs::u8path(root);if(!dir.is_absolute()){report("Disc directory must be absolute");return -1;}
   std::error_code ec;auto state=fs::symlink_status(dir,ec);
   if(ec==std::errc::no_such_file_or_directory)return 0;
-  if(ec||!fs::is_directory(state)){report(std::string("Cannot inspect ")+root+": "+(ec?ec.message():"not a directory"));return -1;}
+  if(ec||!fs::is_directory(state)){report(std::string("Cannot inspect ")+root+": "+(ec?ec.message():"not a directory"));return ec==std::errc::permission_denied||ec==std::errc::operation_not_permitted?-3:-1;}
   std::vector<fs::path> candidates;size_t entries=0;
-  fs::directory_iterator it(dir,ec),end;if(ec){report(std::string("Cannot open ")+root+": "+ec.message());return -1;}
+  fs::directory_iterator it(dir,ec),end;if(ec){report(std::string("Cannot open ")+root+": "+ec.message());return ec==std::errc::permission_denied||ec==std::errc::operation_not_permitted?-3:-1;}
   for(;it!=end;it.increment(ec)){
    if(ec){report(std::string("Cannot enumerate ")+root+": "+ec.message());return -1;}
    if(++entries>512){report(std::string("Too many entries in ")+root);return -1;}
@@ -32,8 +32,8 @@ extern "C" int lod_disc_find_in_directory(const char* root,char* selected,size_t
   fs::path matched_data,matched_mount;
   for(const auto &candidate:candidates){
    auto resolution=PSXRecompV4::resolve_disc_path(candidate);
-   auto parent=fs::weakly_canonical(resolution.data.parent_path(),ec);if(ec){report(ec.message());return -1;}
-   auto expected=fs::weakly_canonical(dir,ec);if(ec||parent!=expected){report("Disc CUE references a file outside its directory");return -1;}
+   for(const auto& component:resolution.data)if(component==".."){report("Disc CUE contains a parent-directory reference");return -1;}
+   if(resolution.data.parent_path().lexically_normal()!=dir.lexically_normal()){report("Disc CUE references a file outside its directory");return -1;}
    auto st=fs::symlink_status(resolution.data,ec);if(ec){report(std::string("Disc data unavailable: ")+resolution.data.u8string()+": "+ec.message());return -1;}
    if(!fs::is_regular_file(st)){report("Disc data must be a regular file");return -1;}
    char why[256]={};int result=lod_disc_probe(resolution.mount.u8string().c_str(),why,sizeof why);

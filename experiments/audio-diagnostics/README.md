@@ -1,0 +1,7 @@
+# Experimental bounded audio diagnostics
+
+This separate patch enables the existing PS5 runtime cadence diagnostics by default, at 10-second intervals, for at most 180 reports per process. Setting `PSX_RUNTIME_PERF_DIAG=0` opts out. It adds host rate, bridge mode, target fill, maximum producer-pump gap and cumulative SPU frames dropped after oversized bursts to the existing fill, underrun, overflow, guest cadence and frame-work measurements. Gap measurements may include deliberate pauses. The diagnostics write through the app's existing log destination. The changed PS5 translation unit compiled and linked into a separate review ELF; it has not been packaged, installed or tested on a console. The currently queued texture candidate is unchanged.
+
+This does not fix or prove the cause of stutter. Bridge fill and input queue counts are not equivalent to device output availability: a separate Soulcalibur I session observed queued input while converted output was unavailable. The current diagnostics do not measure converted output availability or callback timing, and cannot reliably distinguish deliberate pauses from producer gaps. Correlate future output-side, callback and frame measurements with the exact incident before changing buffering or playback timing. The game uses a different producer and must be measured independently.
+
+The patch is against the retained local Dragoon framework snapshot, not a claim of clean applicability to the pinned upstream source. No game assets or built binaries are included.

@@ -1,0 +1,23 @@
+--- a/runtime/src/dragoon_menu.c
++++ b/runtime/src/dragoon_menu.c
+@@ -45 +45 @@
+-static enum DragoonMenuSetting rows[DRAGOON_MENU_SETTING_COUNT];
++static enum DragoonMenuSetting rows[DRAGOON_MENU_SETTING_COUNT + 1];
+@@ -68,0 +69 @@
++    rows[count++]=DRAGOON_MENU_SETTING_COUNT; /* Resume is always available. */
+@@ -88,0 +90,4 @@
++    if (setting == DRAGOON_MENU_SETTING_COUNT) {
++        if (input == DRAGOON_MENU_ACCEPT && !repeat) dragoon_menu_close();
++        return;
++    }
+@@ -121 +126 @@
+-        int y = 120 + i * (count > 7 ? 34 : 39);
++        int y = 120 + i * (count > 8 ? 29 : count > 7 ? 34 : 39);
+@@ -123 +128,6 @@
+-        if(i==selected)rect(34,y-5,572,32,0xff27496cu);
++        if(i==selected)rect(34,y-5,572,28,0xff27496cu);
++        if(s==DRAGOON_MENU_SETTING_COUNT) {
++            text(45,y,"RESUME",2,0xffedf2fau);
++            text(410,y,"PRESS X",2,0xffb6d8ffu);
++            continue;
++        }
